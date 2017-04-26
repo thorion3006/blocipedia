@@ -44,6 +44,7 @@ group :development, :test do
   gem 'faker'
   gem 'factory_girl_rails'
   gem 'pry-rails'
+  gem 'rails-controller-testing'
 end
 
 group :development do
@@ -65,9 +66,10 @@ group :production do
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+#gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # missing gems
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass'
 gem 'devise'
 gem 'figaro'
+gem 'redcarpet', '~> 3.0.0'
