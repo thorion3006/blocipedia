@@ -1,4 +1,6 @@
 require 'rails_helper'
+require 'devise_helper'
+include DeviseRequestSpecHelpers
 
 RSpec.describe WikisController, type: :controller do
   let(:wiki) { create(:wiki) }
@@ -83,7 +85,7 @@ RSpec.describe WikisController, type: :controller do
 
   context 'standard user' do
     before :each do
-      login(user2)
+      sign_in create(:user, email: 'xyz1@test.com')
     end
     describe 'GET #index' do
       it 'returns http success' do
@@ -202,8 +204,5 @@ RSpec.describe WikisController, type: :controller do
         expect(response).to redirect_to(new_user_session_path)
       end
     end
-  end
-  def login(user)
-  post { controller: 'devise/sessions', action: 'create' }, params: { :email => user.email, :password => user.password }
   end
 end
