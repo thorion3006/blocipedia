@@ -5,4 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :wikis, dependent: :destroy
+
+  enum role: [:admin, :standard, :premium]
+
+  after_initialize { self.role ||= :standard }
 end
