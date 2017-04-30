@@ -5,20 +5,18 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-require 'random_data'
-
 5.times do
   User.create!(
-    email: RandomData.random_email,
-    password: RandomData.random_sentence
+    email: Faker::Internet.unique.email,
+    password: Faker::Internet.password(10, 20)
   )
 end
 users = User.all
 
 15.times do
    Wiki.create!(
-     title: RandomData.random_sentence,
-     body: RandomData.random_paragraph,
+     title: Faker::Book.title,
+     body: Faker::Hacker.say_something_smart,
      user: users.sample
    )
 end

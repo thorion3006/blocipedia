@@ -71,6 +71,7 @@ end
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass'
 gem 'devise'
+gem 'faker'
 gem 'figaro'
 gem 'pundit'
 gem 'redcarpet', '~> 3.0.0'
