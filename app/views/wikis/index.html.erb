@@ -1,2 +1,15 @@
-<h1>Wikis#index</h1>
-<p>Find me in app/views/wikis/index.html.erb</p>
+<h1 class="text-center">My wikis</h1>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <% @wikis.each do |wiki| %>
+      <tr>
+        <td><%= link_to wiki.title, wiki %></td>
+        <td><%= link_to 'edit', edit_wiki_path(wiki) %></td>
+        <td><%= link_to 'delete', wiki_path(wiki), method: :delete %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+<div class="text-center">
+  <button class="btn btn-default"><%= link_to 'New wiki', new_wiki_path %></button>
+</div>
