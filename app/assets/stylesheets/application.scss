@@ -13,9 +13,17 @@
  *= require_tree .
  *= require_self
  */
- @import "bootstrap-sprockets";
+@import "bootstrap-sprockets";
 @import "bootstrap";
 
 .user-info {
-  padding-top: 10px;
+  padding: 10px 10px 5px;
+}
+
+.nav-tabs li {
+  padding-top: 25px;
+}
+
+.navbar-link {
+  color: #337ab7 !important;
 }

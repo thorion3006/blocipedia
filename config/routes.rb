@@ -2,7 +2,16 @@ Rails.application.routes.draw do
 
   resources :wikis
 
+  resources :charges, only: [:new, :create]
+
+  put 'charges/change' => 'charges#change'
+
   devise_for :users
+
+  resources :users, only: [:show]
+
+  put 'users/role' => 'users#role'
+
   get 'about' => 'welcome#about'
 
   root 'welcome#index'

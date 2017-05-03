@@ -7,11 +7,36 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 5.times do
   User.create!(
+    name: Faker::Name.unique.name,
+    uname: Faker::Internet.unique.user_name(5..8),
     email: Faker::Internet.unique.email,
     password: Faker::Internet.password(10, 20)
   )
 end
 users = User.all
+
+standard_user = User.create!(
+  name: Faker::Name.unique.name,
+  uname: 'standard',
+  email: 'standard@test.com',
+  password: 'helloworld'
+)
+
+admin_user = User.create!(
+  name: Faker::Name.unique.name,
+  uname: 'admin',
+  email: 'admin@test.com',
+  password: 'helloworld',
+  role: 'admin'
+)
+
+premium_user = User.create!(
+  name: Faker::Name.unique.name,
+  uname: 'premium',
+  email: 'premium@test.com',
+  password: 'helloworld',
+  role: 'premium'
+)
 
 15.times do
    Wiki.create!(

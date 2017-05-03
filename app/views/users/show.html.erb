@@ -1,0 +1,87 @@
+<div class="row">
+  <div class="col-md-8">
+    <div class="media">
+      <br />
+      <% avatar_url = @user.avatar_url(128) %>
+      <% if avatar_url %>
+        <div class="media-left">
+          <%= image_tag avatar_url, class: 'media-object' %>
+        </div>
+      <% end %>
+      <div class="media-body">
+        <h2 class="media-heading"><%= @user.name %></h2>
+        <small>
+          Contributed <%= pluralize(@user.wikis.count, 'wiki') %>
+        </small> </br></br>
+        <% if current_user.uname == @user.uname %>
+          <%= button_to 'Update Info', edit_user_registration_path(current_user), method: :get, class: 'btn btn-info' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="media">
+  <div class="media-body">
+    <h3 class="media-heading">Personal Info:</h4>
+    <div class="row">
+      <h4 class="col-md-2"><strong>Membership Status: </strong></h5>
+      <h4 class="col-md-2"><%= "#{@user.role}" %></h4>
+    </div>
+    <% if current_user.uname == @user.uname %>
+      <% if @user.role == 'standard' %>
+        <div class="row">
+          <h4 class="col-md-2"><strong>Upgrade to Premium membership?: </strong></h5>
+          <%= button_to '$10.00', new_charge_path, method: :get, class: 'btn btn-success' %>
+        </div>
+      <% else %>
+      <div class="row">
+        <h4 class="col-md-2"><strong>Unhappy with Premium Membership?: </strong></h5>
+        <%= button_to "Downgrade to Standard", charges_change_path, method: :put, data: { confirm: "Are you sure?" }, class: 'btn btn-danger' %>
+      </div>
+      <% end %>
+    <% end %>
+    <div class="row">
+      <h4 class="col-md-2"><strong>Email: </strong></h5>
+      <h4 class="col-md-2"><%= "#{@user.email}" %></h4>
+    </div>
+    <div class="row">
+      <h4 class="col-md-2"><strong>Member Since: </strong></h5>
+      <h4 class="col-md-2"><%= @user.created_at.strftime("%b %d, %Y") %></h4>
+    </div>
+  </div>
+</div>
+
+<h2>Public Wikis</h2>
+<% @user.wikis.each do |wiki| %>
+  <% unless wiki.private %>
+    <div class="media">
+      <div class="media-body">
+        <h4 class="media-heading">
+          <%= link_to wiki.title, wiki_path(wiki) %>
+        </h4>
+        <small>
+          submitted <%= time_ago_in_words(wiki.created_at) %> ago by <%= wiki.user.uname %> <br>
+        </small>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<% if @user.role == :Premium %>
+  <h2>Private Wikis</h2>
+  <% @user.wikis.each do |wiki| %>
+    <% if wiki.private %>
+      <div class="media">
+        <div class="media-body">
+          <h4 class="media-heading">
+            <%= link_to wiki.title, wiki_path(wiki) %>
+          </h4>
+          <small>
+            submitted <%= time_ago_in_words(wiki.created_at) %> ago by <%= wiki.user.uname %> <br>
+          </small>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
