@@ -1,8 +1,9 @@
 require 'rails_helper'
 require 'devise_helper'
 include DeviseRequestSpecHelpers
-
+=begin
 RSpec.describe WikisController, type: :controller do
+
   let(:wiki) { create(:wiki) }
   let(:user) { create(:user) }
   let(:user2) do
@@ -206,3 +207,4 @@ RSpec.describe WikisController, type: :controller do
     end
   end
 end
+=end
