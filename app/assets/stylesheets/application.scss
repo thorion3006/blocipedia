@@ -16,6 +16,10 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+body {
+  padding-bottom: 30px;
+}
+
 .user-info {
   padding: 10px 10px 5px;
 }

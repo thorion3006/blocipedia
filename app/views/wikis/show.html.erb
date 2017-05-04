@@ -1,5 +1,13 @@
-<h1><%= @wiki.title %></h1>
-
+<h1>
+  <%= @wiki.title %></br>
+  <small>
+    <% if @wiki.private %>
+      Private Wiki -
+    <% end %>
+    submitted <%= time_ago_in_words(@wiki.created_at) %> ago by <%= @wiki.user.uname %>
+  </small>
+</h1>
+</br>
 <div class="row">
   <div class="col-md-8">
     <p><%= @wiki.body %></p>
@@ -8,6 +16,6 @@
 
 <div class="text-center">
   <% if user_signed_in? %>
-    <button class="btn btn-default"><%= link_to 'Edit', edit_wiki_path(@wiki) %></button>
+    <%= link_to 'Edit', edit_wiki_path(@wiki), class: "btn btn-default" %>
   <% end %>
 </div>
