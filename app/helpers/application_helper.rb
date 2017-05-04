@@ -12,4 +12,33 @@ module ApplicationHelper
   def active_role(role)
     @user.role == role ? 'btn btn-default active' : 'btn btn-default'
   end
+
+  def markdown(text)
+    options = {
+      filter_html: true,
+      hard_wrap: true,
+      with_toc_data: true,
+      prettify: true,
+      link_attributes: { rel: 'nofollow', target: "_blank" },
+    }
+
+    extensions = {
+      no_intra_emphasis: true,
+      tables: true,
+      fenced_code_blocks: true,
+      autolink: true,
+      superscript: true,
+      disable_indented_code_blocks: true,
+      strikethrough: true,
+      space_after_headers: true,
+      highlight: true,
+      quote: true,
+      footnotes: true
+    }
+
+    renderer = Redcarpet::Render::HTML.new(options)
+    markdown = Redcarpet::Markdown.new(renderer, extensions)
+
+    markdown.render(text).html_safe
+  end
 end

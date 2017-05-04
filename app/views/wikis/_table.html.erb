@@ -12,7 +12,7 @@
       <% else %>
         <% if wiki.private %>
           <tr>
-            <td><%= link_to wiki.title, wiki %></td>
+            <td><%= link_to markdown(wiki.title), wiki %></td>
             <td><%= link_to 'edit', edit_wiki_path(wiki) %></td>
             <td><%= link_to 'delete', wiki_path(wiki), method: :delete %></td>
           </tr>
