@@ -18,7 +18,18 @@ class User < ApplicationRecord
   #To allow signin using either email id or username
   attr_accessor :login
 
-  after_initialize { self.role ||= :standard }
+  after_initialize {
+    self.role ||= :standard
+    self.account_active = false if self.role == 'premium'
+  }
+
+  def active_for_authentication?
+    super && account_active?
+  end
+
+  def inactive_message
+    account_active? ? super : :payment_pending
+  end
 
   def self.find_for_database_authentication warden_conditions
     conditions = warden_conditions.dup
