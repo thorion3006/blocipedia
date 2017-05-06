@@ -2,12 +2,15 @@
 <% if current_user.standard? %>
   <%= render partial: 'table', locals: { free: true } %>
 <% else %>
-  <ul class="nav nav-tabs nav-justified">
-    <li role="presentation" class="<%= active_view(true) %>"><%= link_to 'Public', wikis_path(state = true) %></li>
-    <li role="presentation" class="<%= active_view(false) %>"><%= link_to 'Private', wikis_path(state = false) %></li>
-  </ul>
-  <%= render partial: 'table', locals: { free: @view } %>
-  <%= render partial: 'table', locals: { free: true } %>
+  <div class="nav nav-tabs nav-justified">
+    <div class="switch-field">
+      <%= radio_button :show, 'Public', checked: true %>
+      <%= label :show, 'Public' %>
+      <input type="radio" id="switch_right" name=@show value=false />
+      <label for="switch_right">Private</label>
+    </div>
+  </div>
+  <%= render partial: 'table', locals: { free: @show } %>
 <% end %>
 <div class="text-center">
   <%= link_to 'New wiki', new_wiki_path, class: "btn btn-default" %>
