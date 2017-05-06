@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  put 'wikis/view' => 'wikis#view'
+
   resources :wikis
 
   resources :charges, only: [:new, :create]
