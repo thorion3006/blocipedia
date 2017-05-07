@@ -30,13 +30,14 @@ class ChargesController < ApplicationController
   end
 
   def change
-    if current_user.role == 'standard'
-      current_user.role = 'premium'
-    elsif current_user.role == 'premium'
-      current_user.wikis.each do |wiki|
-        wiki.private = false if wiki.private
+    if current_user.account_active
+      if current_user.role == 'standard'
+        current_user.role = 'premium'
+      elsif current_user.role == 'premium'
+        current_user.role = 'standard'
       end
-      current_user.role = 'standard'
+    else
+      current_user.account_active = true
     end
     current_user.save
     redirect_to user_path(current_user)

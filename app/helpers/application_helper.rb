@@ -9,10 +9,6 @@ module ApplicationHelper
     current_page?(link_path) ? "active" : ""
   end
 
-  def active_role(role)
-    @user.role == role ? 'btn btn-default active' : 'btn btn-default'
-  end
-
   def markdown(text)
     options = {
       filter_html: true,
