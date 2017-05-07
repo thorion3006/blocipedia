@@ -3,11 +3,11 @@ class WikiPolicy < ApplicationPolicy
 
   def initialize(user, wiki)
     @user = user
-    @wiki = record
+    @wiki = wiki
   end
 
   def index?
-    false
+    user.present?
   end
 
   def show?
@@ -15,7 +15,7 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def create?
-    user.present? && user.account_active?
+    user.account_active?
   end
 
   def new?
@@ -23,7 +23,7 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def update?
-    user.present? && user.account_active?
+    user.account_active?
   end
 
   def edit?
@@ -31,7 +31,7 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.present? && user.account_active?
+    user.account_active?
   end
 
   def scope
