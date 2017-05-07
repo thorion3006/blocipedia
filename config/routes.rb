@@ -10,8 +10,6 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show]
 
-  put 'users/role' => 'users#role'
-
   get 'about' => 'welcome#about'
 
   root 'welcome#index'

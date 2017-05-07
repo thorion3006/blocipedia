@@ -23,14 +23,6 @@ class User < ApplicationRecord
     self.account_active = false if self.role == 'premium'
   }
 
-  def active_for_authentication?
-    super && account_active?
-  end
-
-  def inactive_message
-    account_active? ? super : :payment_pending
-  end
-
   def self.find_for_database_authentication warden_conditions
     conditions = warden_conditions.dup
     login = conditions.delete(:login)
