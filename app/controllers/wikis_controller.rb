@@ -2,9 +2,10 @@ class WikisController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
 
-  def index(state = true)
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
+  def index
     @wikis = Wiki.all
-    @view = params[state]
   end
 
   def show
@@ -13,11 +14,13 @@ class WikisController < ApplicationController
 
   def new
     @wiki = Wiki.new
+    authorize @wiki
   end
 
   def create
     @wiki = Wiki.new(wiki_params)
     @wiki.user = current_user
+    authorize @wiki
 
     if @wiki.save
       flash[:notice] = 'Wiki saved successfully.'
@@ -30,10 +33,12 @@ class WikisController < ApplicationController
 
   def edit
     @wiki = Wiki.find(params[:id])
+    authorize @wiki
   end
 
   def update
     @wiki = Wiki.find(params[:id])
+    authorize @wiki
     @wiki.assign_attributes(wiki_params)
 
     if @wiki.save
@@ -47,6 +52,7 @@ class WikisController < ApplicationController
 
   def destroy
     @wiki = Wiki.find(params[:id])
+    authorize @wiki
 
     if @wiki.destroy
       flash[:notice] = "\"#{@wiki.title}\" was deleted successfully."
@@ -61,5 +67,15 @@ class WikisController < ApplicationController
 
   def wiki_params
     params.require(:wiki).permit(:title, :body, :private)
+  end
+
+  def user_not_authorized
+    if current_user.account_active?
+      flash[:alert] = 'You are not authorized to do this - go back from whence you came.'
+      redirect_to :back
+    else
+      flash[:alert] = 'Your account is not activated yet and onll has limited access. Complete the payment to activate it.'
+      redirect_to new_charge_path
+    end
   end
 end

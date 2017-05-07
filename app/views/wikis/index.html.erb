@@ -1,12 +1,12 @@
 <h1 class="text-center">My wikis</h1>
-<% if current_user.standard? %>
+<% if !current_user || current_user.standard? %>
   <%= render partial: 'table', locals: { free: true } %>
 <% else %>
   <ul class="nav nav-tabs nav-justified">
-    <li role="presentation" class="<%= active_view(true) %>"><%= link_to 'Public', wikis_path(state = true) %></li>
-    <li role="presentation" class="<%= active_view(false) %>"><%= link_to 'Private', wikis_path(state = false) %></li>
+    <li role="presentation"><%= link_to 'Public', wikis_path %></li>
+    <li role="presentation"><%= link_to 'Private', wikis_path %></li>
   </ul>
-  <%= render partial: 'table', locals: { free: @view } %>
+  <%= render partial: 'table', locals: { free: false } %>
   <%= render partial: 'table', locals: { free: true } %>
 <% end %>
 <div class="text-center">
