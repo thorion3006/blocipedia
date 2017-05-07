@@ -1,5 +1,5 @@
 <h1 class="text-center">My wikis</h1>
-<% if current_user.standard? %>
+<% if !current_user || current_user.standard? %>
   <%= render partial: 'table', locals: { free: true } %>
 <% else %>
   <ul class="nav nav-tabs nav-justified">
