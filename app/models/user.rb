@@ -4,7 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :wikis, dependent: :destroy
+  has_many :collaborators, dependent: :destroy
+  has_many :wikis, through: :collaborators, dependent: :destroy
 
   validates :name, length: { minimum: 3, maximum: 100 }, presence: true
 

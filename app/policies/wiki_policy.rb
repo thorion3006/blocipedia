@@ -3,11 +3,11 @@ class WikiPolicy < ApplicationPolicy
 
   def initialize(user, wiki)
     @user = user
-    @wiki = record
+    @wiki = wiki
   end
 
   def index?
-    false
+    user.present?
   end
 
   def show?
@@ -15,7 +15,11 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def create?
-    user.present? && user.account_active?
+    if wiki.private
+      !user.standard? && user.account_active?
+    else
+      user.account_active?
+    end
   end
 
   def new?
@@ -23,7 +27,11 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def update?
-    user.present? && user.account_active?
+    if wiki.private
+      user.account_active? && wiki.collaborators.include?(user)
+    else
+      user.account_active?
+    end
   end
 
   def edit?
@@ -31,7 +39,11 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.present? && user.account_active?
+    if wiki.private
+      user.admin? || user.account_active? && wiki.owner == user
+    else
+      user.account_active?
+    end
   end
 
   def scope
@@ -47,7 +59,26 @@ class WikiPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope
+      wikis = []
+      if user.role == 'admin'
+        wikis = scope.all
+      elsif user.role == 'premium'
+        all_wikis = scope.all
+        all_wikis.each do |wiki|
+          if !wiki.private? || wiki.owner == user || wiki.collaborators.include?(user)
+            wikis << wiki
+          end
+        end
+      else
+        all_wikis = scope.all
+        wikis = []
+        all_wikis.each do |wiki|
+          if wiki.public? || wiki.collaborators.include?(user)
+            wikis << wiki
+          end
+        end
+      end
+      wikis
     end
   end
 end
