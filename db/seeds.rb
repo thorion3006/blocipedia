@@ -96,9 +96,9 @@ end
    )
 end
 
- puts 'Seed finished'
- puts "#{admin_users.count} admin users created"
- puts "#{premium_users.count} premium users created"
- puts "#{User.count} users created"
- puts "#{Wiki.where(private: true).count} private wikis created"
- puts "#{Wiki.count} wikis created"
+puts 'Seed finished'
+puts "#{admin_users.count} admin users created"
+puts "#{premium_users.count} premium users created"
+puts "#{User.count} users created"
+puts "#{Wiki.where(private: true).count} private wikis created"
+puts "#{Wiki.count} wikis created"

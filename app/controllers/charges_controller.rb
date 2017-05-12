@@ -37,9 +37,9 @@ class ChargesController < ApplicationController
         current_user.role = 'standard'
       end
     else
-      current_user.account_active = true
+      current_user.update_attribute(:account_active, true)
     end
-    current_user.save
+    current_user.save!
     redirect_to user_path(current_user)
   end
 end

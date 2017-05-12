@@ -3,11 +3,12 @@
   <%= render partial: 'table', locals: { free: true } %>
 <% else %>
   <ul class="nav nav-tabs nav-justified">
-    <li role="presentation"><%= link_to 'Public', wikis_path %></li>
-    <li role="presentation"><%= link_to 'Private', wikis_path %></li>
+    <li role="presentation"><%= link_to 'Public', wikis_path(free: 1) %></li>
+    <li role="presentation"><%= link_to 'Private', wikis_path(free: 0) %></li>
   </ul>
-  <%= render partial: 'table', locals: { free: false } %>
-  <%= render partial: 'table', locals: { free: true } %>
+  <div id='wikis_table'>
+    <%= render partial: 'table' %>
+  </div>
 <% end %>
 <div class="text-center">
   <%= link_to 'New wiki', new_wiki_path, class: "btn btn-default" %>

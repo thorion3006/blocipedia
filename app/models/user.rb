@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :collaborators, dependent: :destroy
+  has_many :collaborators
   has_many :wikis, through: :collaborators, dependent: :destroy
 
   validates :name, length: { minimum: 3, maximum: 100 }, presence: true
@@ -17,12 +17,17 @@ class User < ApplicationRecord
   enum role: [:admin, :standard, :premium]
 
   #To allow signin using either email id or username
-  attr_accessor :login
+  attr_accessor :login, :account_active
 
-  after_initialize {
+  after_create :init
+
+  attr_default :account_active, false
+
+  def init
     self.role ||= :standard
-    self.account_active = false if self.role == 'premium'
-  }
+    self.account_active = true unless self.premium?
+    self.save
+  end
 
   def self.find_for_database_authentication warden_conditions
     conditions = warden_conditions.dup

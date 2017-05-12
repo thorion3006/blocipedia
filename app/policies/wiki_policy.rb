@@ -11,7 +11,7 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def show?
-    scope.where(:id => record.id).exists?
+    scope.where(:id => record.id).exists? && update?
   end
 
   def create?
@@ -28,7 +28,7 @@ class WikiPolicy < ApplicationPolicy
 
   def update?
     if wiki.private
-      user.account_active? && wiki.collaborators.include?(user)
+      user.account_active? && wiki.user == user || wiki.collaborators.include?(user)
     else
       user.account_active?
     end
@@ -40,7 +40,7 @@ class WikiPolicy < ApplicationPolicy
 
   def destroy?
     if wiki.private
-      user.admin? || user.account_active? && wiki.owner == user
+      user.admin? || user.account_active? && wiki.user == user
     else
       user.account_active?
     end
@@ -65,7 +65,7 @@ class WikiPolicy < ApplicationPolicy
       elsif user.role == 'premium'
         all_wikis = scope.all
         all_wikis.each do |wiki|
-          if !wiki.private? || wiki.owner == user || wiki.collaborators.include?(user)
+          if !wiki.private? || wiki.collaborators.include?(user) || wiki.user == user
             wikis << wiki
           end
         end
@@ -73,7 +73,7 @@ class WikiPolicy < ApplicationPolicy
         all_wikis = scope.all
         wikis = []
         all_wikis.each do |wiki|
-          if wiki.public? || wiki.collaborators.include?(user)
+          if !wiki.private? || wiki.collaborators.include?(user)
             wikis << wiki
           end
         end

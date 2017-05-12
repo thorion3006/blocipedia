@@ -6,6 +6,13 @@ class WikisController < ApplicationController
 
   def index
     @wikis = policy_scope(Wiki)
+    if params[:free].present?
+      view = params[:free]
+      @wikis = view.to_i == 1 ? @wikis.free : @wikis.paid
+      respond_to do |format|
+        format.html { render html: @wikis }
+      end
+    end
   end
 
   def show
@@ -74,7 +81,7 @@ class WikisController < ApplicationController
       flash[:alert] = 'You are not authorized to do this - go back from whence you came.'
       redirect_to :back
     else
-      flash[:alert] = 'Your account is not activated yet and onll has limited access. Complete the payment to activate it.'
+      flash[:alert] = 'Your account is not activated yet and only has limited access. Complete the payment to activate it.'
       redirect_to new_charge_path
     end
   end

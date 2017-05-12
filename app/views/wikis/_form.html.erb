@@ -25,8 +25,10 @@
   <% end %>
   <div class="form-group">
     <%= f.submit "Save", class: 'btn btn-success' %>
+    <% if action_name == 'edit' && wiki.private %>
+      <%= link_to 'Add collaborators', collaborators_path(wiki.id), class: 'btn btn-info' %>
+    <% end %>
   </div>
 <% end %>
 
 <script src="https://cdn.rawgit.com/showdownjs/showdown/1.6.4/dist/showdown.min.js"></script>
-<script type="text/javascript" src="preview.js"></script>

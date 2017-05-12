@@ -1,23 +1,11 @@
 <div class="table-responsive">
   <table class="table table-striped">
     <% @wikis.each do |wiki| %>
-      <% if free %>
-        <% unless wiki.private %>
-          <tr>
-            <td><%= link_to wiki.title, wiki %></td>
-            <td><%= link_to 'edit', edit_wiki_path(wiki) %></td>
-            <td><%= link_to 'delete', wiki_path(wiki), method: :delete %></td>
-          </tr>
-        <% end %>
-      <% else %>
-        <% if wiki.private %>
-          <tr>
-            <td><%= link_to markdown(wiki.title), wiki %></td>
-            <td><%= link_to 'edit', edit_wiki_path(wiki) %></td>
-            <td><%= link_to 'delete', wiki_path(wiki), method: :delete %></td>
-          </tr>
-        <% end %>
-      <% end %>
+      <tr>
+        <td><%= link_to wiki.title, wiki %></td>
+        <td><%= link_to 'edit', edit_wiki_path(wiki) %></td>
+        <td><%= link_to 'delete', wiki_path(wiki), method: :delete %></td>
+      </tr>
     <% end %>
   </table>
 </div>
