@@ -3,10 +3,10 @@
   <%= render partial: 'table', locals: { free: true } %>
 <% else %>
   <ul class="nav nav-tabs nav-justified">
-    <li class="<%= active_view(false) %>"><%= link_to 'Public', wikis_view_path, method: :put, params: { paid: false } %></li>
-    <li class="<%= active_view(true) %>"><%= link_to 'Private', wikis_view_path, method: :put, params: { paid: true } %></li>
+    <li><%= link_to 'Public', wikis_view_path %></li>
+    <li><%= link_to 'Private', wikis_view_path %></li>
   </ul>
-  <%= render partial: 'table', locals: { paid: @view } %>
+  <%= render partial: 'table', locals: { paid: true } %>
 <% end %>
 <div class="text-center">
   <%= link_to 'New wiki', new_wiki_path, class: "btn btn-default" %>
