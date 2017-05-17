@@ -8,6 +8,8 @@ class RegistrationsController < Devise::RegistrationsController
     if resource.persisted?
       if resource.active_for_authentication?
         if resource.standard?
+          @user = User.find_by email: resource.email
+          @user.account_active = true
           set_flash_message! :notice, :signed_up
         else
           set_flash_message! :notice, :"signed_up_but_payment_pending"

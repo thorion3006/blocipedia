@@ -34,6 +34,12 @@ class ChargesController < ApplicationController
       if current_user.role == 'standard'
         current_user.role = 'premium'
       elsif current_user.role == 'premium'
+        wikis = Wiki.where(user_id: current_user.id).where(private: true)
+        wikis.each do |wiki|
+          wiki.collaborators.destroy_all
+          wiki.private = false
+          wiki.save
+        end
         current_user.role = 'standard'
       end
     else

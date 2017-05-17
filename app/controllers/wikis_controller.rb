@@ -5,18 +5,19 @@ class WikisController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
-    @wikis = policy_scope(Wiki)
+    @wikis = Wiki.view(current_user)
     if params[:free].present?
       view = params[:free]
       @wikis = view.to_i == 1 ? @wikis.free : @wikis.paid
       respond_to do |format|
-        format.html { render html: @wikis }
+        format.html { render js: index.js.erb }
       end
     end
   end
 
   def show
     @wiki = Wiki.find(params[:id])
+    authorize @wiki
   end
 
   def new
@@ -46,7 +47,22 @@ class WikisController < ApplicationController
   def update
     @wiki = Wiki.find(params[:id])
     authorize @wiki
-    @wiki.assign_attributes(wiki_params)
+
+    if params[:users].present?
+      admins = User.admin.pluck(:id)
+      @wiki.collaborators.where.not(user_id: admins).destroy_all
+      # @wiki.collaborators.destroy_all
+      # User.admin.each do |user|
+      # => @wiki.collaborators.build(user_id: user.id)
+      # end
+      users = params[:users]
+      users.each do |user|
+        @wiki.collaborators.build(user_id: user.to_i)
+      end
+    end
+    if params[:wiki].present?
+      @wiki.assign_attributes(wiki_params)
+    end
 
     if @wiki.save
       flash[:notice] = 'Wiki updated successfully.'
@@ -79,7 +95,7 @@ class WikisController < ApplicationController
   def user_not_authorized
     if current_user.account_active?
       flash[:alert] = 'You are not authorized to do this - go back from whence you came.'
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
     else
       flash[:alert] = 'Your account is not activated yet and only has limited access. Complete the payment to activate it.'
       redirect_to new_charge_path

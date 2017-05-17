@@ -22,4 +22,14 @@ class Wiki < ApplicationRecord
     end
     self.save
   end
+
+  def self.view(user)
+    if user.admin?
+      Wiki.all
+    elsif user.premium?
+      Wiki.where('private = ? OR user_id = ?', false, user.id) + Wiki.joins(:collaborators).where("collaborators.user_id = ?", user.id).distinct
+    else
+      Wiki.where(private: false) + Wiki.joins(:collaborators).where("collaborators.user_id = ?", user.id).distinct
+    end
+  end
 end
