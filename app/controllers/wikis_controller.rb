@@ -86,6 +86,10 @@ class WikisController < ApplicationController
     end
   end
 
+  def view
+    @view = params[:paid]
+  end
+
   private
 
   def wiki_params
