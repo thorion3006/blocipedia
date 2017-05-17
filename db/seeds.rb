@@ -42,23 +42,27 @@ admin_user = User.create!(
 )
 
 5.times do
-  User.create!(
+  premium =  User.new(
     name: Faker::Name.unique.name,
     uname: Faker::Internet.unique.user_name(5..8),
     email: Faker::Internet.unique.email,
     password: Faker::Internet.password(10, 20),
-    role: 'premium'
+    role: 'premium',
+    account_active: true
   )
+  premium.save
 end
 premium_users = User.where(role: 'premium')
 
-premium_user = User.create!(
+premium_user = User.new(
   name: Faker::Name.unique.name,
   uname: 'premium',
   email: 'premium@test.com',
   password: 'helloworld',
-  role: 'premium'
+  role: 'premium',
+  account_active: true
 )
+premium_user.save
 
 paid_users = User.where.not(role: 'standard')
 
@@ -96,9 +100,9 @@ end
    )
 end
 
- puts 'Seed finished'
- puts "#{admin_users.count} admin users created"
- puts "#{premium_users.count} premium users created"
- puts "#{User.count} users created"
- puts "#{Wiki.where(private: true).count} private wikis created"
- puts "#{Wiki.count} wikis created"
+puts 'Seed finished'
+puts "#{admin_users.count} admin users created"
+puts "#{premium_users.count} premium users created"
+puts "#{User.count} users created"
+puts "#{Wiki.where(private: true).count} private wikis created"
+puts "#{Wiki.count} wikis created"

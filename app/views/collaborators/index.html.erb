@@ -1,0 +1,22 @@
+<h1 class="text-center">Add Collaborators to Wiki</h1>
+<%= form_for @wiki do |f| %>
+  <table class="table table-striped">
+    <tr>
+      <th>Username</td>
+      <th>Email</td>
+      <th>Grant Access</td>
+    </tr>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.uname %></td>
+        <td><%= user.email %></td>
+        <td><%= check_box_tag 'users[]', user.id, checked(user) %></td>
+      </tr>
+    <% end %>
+  </table>
+  <div class="text-center">
+    <%= f.submit "Save Wiki", class: 'btn btn-default' %>
+  </div>
+<% end %>
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>

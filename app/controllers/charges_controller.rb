@@ -34,12 +34,18 @@ class ChargesController < ApplicationController
       if current_user.role == 'standard'
         current_user.role = 'premium'
       elsif current_user.role == 'premium'
+        wikis = Wiki.where(user_id: current_user.id).where(private: true)
+        wikis.each do |wiki|
+          wiki.collaborators.destroy_all
+          wiki.private = false
+          wiki.save
+        end
         current_user.role = 'standard'
       end
     else
-      current_user.account_active = true
+      current_user.update_attribute(:account_active, true)
     end
-    current_user.save
+    current_user.save!
     redirect_to user_path(current_user)
   end
 end

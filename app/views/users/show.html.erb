@@ -38,11 +38,18 @@
           <h4 class="col-md-2"><strong>Upgrade to Premium membership?: </strong></h5>
           <%= button_to '$10.00', new_charge_path, method: :get, class: 'btn btn-success' %>
         </div>
-      <% else %>
-      <div class="row">
-        <h4 class="col-md-2"><strong>Unhappy with Premium Membership?: </strong></h5>
-        <%= button_to "Downgrade to Standard", charges_change_path, method: :put, data: { confirm: "Are you sure? All your private wikis will be made public if you continue." }, class: 'btn btn-danger' %>
-      </div>
+      <% elsif @user.role == 'premium' %>
+        <% if @user.account_active %>
+          <div class="row">
+            <h4 class="col-md-2"><strong>Unhappy with Premium Membership?: </strong></h5>
+            <%= button_to "Downgrade to Standard", charges_change_path, method: :put, data: { confirm: "Are you sure? All your private wikis will be made public if you continue." }, class: 'btn btn-danger' %>
+          </div>
+        <% else %>
+          <div class="row">
+            <h4 class="col-md-2"><strong>Activate account?: </strong></h5>
+            <%= button_to '$10.00', new_charge_path, method: :get, class: 'btn btn-success' %>
+          </div>
+        <% end %>
       <% end %>
     <% end %>
     <div class="row">
